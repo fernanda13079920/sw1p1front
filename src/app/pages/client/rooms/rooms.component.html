@@ -1,0 +1,86 @@
+<div class="flex h-screen w-full">
+
+  <app-sidebar-izq class="bg-zinc-800 w-[20%]  p-4 border-r border-gray-300" [components]="components"
+    [roomCode]="roomCode" [contextMenu]="contextMenu" [isModalOpen]="isModalOpen">
+  </app-sidebar-izq>
+
+
+
+
+
+
+  <div class="flex flex-col flex-1 border border-none">
+
+    <!-- Panel central: Canvas (BODY) -->
+    <div #canvas class="flex-1 bg-gray-100 relative border border-gray-300 overflow-auto py-8"
+      (contextmenu)="onCanvasContextMenu($event) " (mousemove)="onMouseMove($event)" (mouseup)="onMouseUp()">
+
+      <!-- Renderizado de componentes -->
+      <ng-container *ngFor="let comp of components">
+        <ng-container *ngTemplateOutlet="renderComponent; context: { comp: comp }"></ng-container>
+      </ng-container>
+
+
+      <!-- Menú contextual -->
+      <div *ngIf="contextMenu.visible" [style.left.px]="contextMenu.x" [style.top.px]="contextMenu.y"
+        class="fixed bg-white border rounded shadow z-[1000]">
+        <button (click)="addChild(contextMenu.targetId)" class="block px-4 py-2 hover:bg-gray-100 w-full text-left">
+          Agregar hijo
+        </button>
+        <button (click)="copyComponent(findComponentById(contextMenu.targetId, components)!)"
+          class="block px-4 py-2 hover:bg-gray-100 w-full text-left">
+          Copiar
+        </button>
+        <button (click)="cutComponent(findComponentById(contextMenu.targetId, components)!)"
+          class="block px-4 py-2 hover:bg-gray-100 w-full text-left">
+          Cortar
+        </button>
+        <button (click)="pasteComponent(contextMenu.targetId)"
+          class="block px-4 py-2 hover:bg-gray-100 w-full text-left">
+          Pegar dentro
+        </button>
+        <button (click)="removeComponent(contextMenu.targetId)"
+          class="block px-4 py-2 hover:bg-gray-100 w-full text-left">
+          Eliminar
+        </button>
+      </div>
+
+    </div>
+
+  </div>
+
+
+
+
+
+
+
+
+  <!-- Panel derecho: Propiedades -->
+  <aside class="w-[20%] bg-zinc-800 p-4 border-none overflow-y-auto h-full">
+
+<app-navegation></app-navegation>
+
+    <app-sidebar-der [selectedComponent]="selectedComponent" [roomCode]="roomCode"></app-sidebar-der>
+  </aside>
+
+  <!-- Template de renderizado recursivo -->
+  <ng-template #renderComponent let-comp="comp">
+    <div class="border p-2 text-center cursor-move" [ngStyle]="comp.style" 
+      [style.position]="comp.parentId ? 'absolute' : 'relative'" [style.min-width.px]="50" [style.min-height.px]="40"
+      (mousedown)="onMouseDown($event, comp)" (click)="selectComponent(comp, $event)"
+      (contextmenu)="onComponentContextMenu($event, comp.id)">
+      <!-- Mostrar el contenido si existe -->
+      {{ comp.content || comp.label }}
+
+      <!-- Renderizar hijos si los hay -->
+      <ng-container *ngIf="comp.children">
+        <ng-container *ngFor="let child of comp.children">
+          <ng-container *ngTemplateOutlet="renderComponent; context: { comp: child }"></ng-container>
+        </ng-container>
+      </ng-container>
+    </div>
+  </ng-template>
+
+
+</div>
