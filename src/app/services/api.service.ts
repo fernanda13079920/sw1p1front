@@ -85,14 +85,15 @@ export class ApiService {
   }
 
 
-  // Obtener salas del usuario autenticado
-  getUserRooms(): Observable<any[]> {
-    const headers = new HttpHeaders().set(
-      'Authorization',
-      `Bearer ${this.getToken()}`
-    );
-    return this.http.get<any[]>(`${this.apiUrl}/rooms/user-rooms`, { headers });
-  }
+  // Obtener las salas creadas por el usuario
+getMyRooms(): Observable<any[]> {
+  const headers = new HttpHeaders().set(
+    'Authorization',
+    `Bearer ${this.getToken()}`
+  );
+  return this.http.get<any[]>(`${this.apiUrl}/rooms/user-rooms`, { headers });
+}
+
 
   // Método para unirse a una sala por código (es probable que sea un POST)
   joinRoom(roomCode: string): Observable<any> {
@@ -123,4 +124,14 @@ export class ApiService {
     localStorage.removeItem(this.tokenKey); // Elimina el token del almacenamiento local
     this.router.navigate(['']); // Redirige al usuario a la página de login
   }
+
+  // Eliminar una sala por ID
+deleteRoom(id: number): Observable<any> {
+  const headers = new HttpHeaders().set(
+    'Authorization',
+    `Bearer ${this.getToken()}`
+  );
+  return this.http.delete<any>(`${this.apiUrl}/rooms/${id}`, { headers });
+}
+
 }

@@ -2,11 +2,11 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ApiService } from '../../services/api.service'; // Ajusta la ruta si es necesario
 import { Router, RouterModule } from '@angular/router';
-
+import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [FormsModule, RouterModule],
+  imports: [FormsModule, RouterModule, CommonModule],
   templateUrl: './register.component.html',
 })
 export class RegisterComponent {

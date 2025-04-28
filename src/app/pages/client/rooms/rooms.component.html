@@ -1,20 +1,23 @@
 <div class="flex h-screen w-full">
 
-  <app-sidebar-izq class="bg-zinc-800 w-[20%]  p-4 border-r border-gray-300" [components]="components"
-    [roomCode]="roomCode" [contextMenu]="contextMenu" [isModalOpen]="isModalOpen">
-  </app-sidebar-izq>
-
-
-
-
-
+  <app-sidebar-izq
+  class="bg-cyan-800 w-[20%] p-4  shadow-lg border-r border-cyan-700"
+  [components]="components"
+  [roomCode]="roomCode"
+  [contextMenu]="contextMenu"
+  [isModalOpen]="isModalOpen">
+</app-sidebar-izq>
 
   <div class="flex flex-col flex-1 border border-none">
 
     <!-- Panel central: Canvas (BODY) -->
-    <div #canvas class="flex-1 bg-gray-100 relative border border-gray-300 overflow-auto py-8"
-      (contextmenu)="onCanvasContextMenu($event) " (mousemove)="onMouseMove($event)" (mouseup)="onMouseUp()">
-
+    <div
+    #canvas
+    class="flex-1 bg-white border border-cyan-300 overflow-auto p-6 m-4 rounded-lg relative"
+    (contextmenu)="onCanvasContextMenu($event)"
+    (mousemove)="onMouseMove($event)"
+    (mouseup)="onMouseUp()"
+  >
       <!-- Renderizado de componentes -->
       <ng-container *ngFor="let comp of components">
         <ng-container *ngTemplateOutlet="renderComponent; context: { comp: comp }"></ng-container>
@@ -24,24 +27,20 @@
       <!-- Menú contextual -->
       <div *ngIf="contextMenu.visible" [style.left.px]="contextMenu.x" [style.top.px]="contextMenu.y"
         class="fixed bg-white border rounded shadow z-[1000]">
-        <button (click)="addChild(contextMenu.targetId)" class="block px-4 py-2 hover:bg-gray-100 w-full text-left">
-          Agregar hijo
+        <button (click)="addChild(contextMenu.targetId)" class="block w-full px-4 py-2 hover:bg-gray-100 text-left">
+          ➕ Agregar hijo
         </button>
-        <button (click)="copyComponent(findComponentById(contextMenu.targetId, components)!)"
-          class="block px-4 py-2 hover:bg-gray-100 w-full text-left">
-          Copiar
+        <button (click)="copyComponent(findComponentById(contextMenu.targetId, components)!)" class="block w-full px-4 py-2 hover:bg-gray-100 text-left">
+          📋 Copiar
         </button>
-        <button (click)="cutComponent(findComponentById(contextMenu.targetId, components)!)"
-          class="block px-4 py-2 hover:bg-gray-100 w-full text-left">
-          Cortar
+        <button (click)="cutComponent(findComponentById(contextMenu.targetId, components)!)" class="block w-full px-4 py-2 hover:bg-gray-100 text-left">
+          ✂️ Cortar
         </button>
-        <button (click)="pasteComponent(contextMenu.targetId)"
-          class="block px-4 py-2 hover:bg-gray-100 w-full text-left">
-          Pegar dentro
+        <button (click)="pasteComponent(contextMenu.targetId)" class="block w-full px-4 py-2 hover:bg-gray-100 text-left">
+          📥 Pegar dentro
         </button>
-        <button (click)="removeComponent(contextMenu.targetId)"
-          class="block px-4 py-2 hover:bg-gray-100 w-full text-left">
-          Eliminar
+        <button (click)="removeComponent(contextMenu.targetId)" class="block w-full px-4 py-2 hover:bg-gray-100 text-left text-red-600">
+          🗑️ Eliminar
         </button>
       </div>
 
@@ -57,9 +56,10 @@
 
 
   <!-- Panel derecho: Propiedades -->
-  <aside class="w-[20%] bg-zinc-800 p-4 border-none overflow-y-auto h-full">
+  <aside class="w-[20%] bg-cyan-800 p-4 text-white overflow-y-auto shadow-lg border-l border-cyan-700">
 
-<app-navegation></app-navegation>
+    <!-- Navegación -->
+    <app-navegation></app-navegation>
 
     <app-sidebar-der [selectedComponent]="selectedComponent" [roomCode]="roomCode"></app-sidebar-der>
   </aside>
