@@ -40,29 +40,59 @@
   <!-- Resto de contenido -->
   <h2 class="text-lg font-semibold text-white">Componentes</h2>
 
-  <button class="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700" (click)="addComponent()">
-    Agregar Caja DIV
+<!-- Botones para agregar componentes -->
+<div class="grid grid-cols-2 gap-2">
+  <button class="bg-blue-600 text-white py-2 rounded hover:bg-blue-700" (click)="addComponent()">
+    Caja DIV
   </button>
-  <button class="w-full bg-yellow-600 text-white py-2 rounded hover:bg-yellow-700 mt-2" (click)="addLabelComponent()">
-    Agregar Label
+
+  <button class="bg-yellow-600 text-white py-2 rounded hover:bg-yellow-700" (click)="addLabelComponent()">
+    Label
   </button>
-  <button class="w-full bg-yellow-600 text-white py-2 rounded hover:bg-yellow-700 mt-2" (click)="addButtonComponent()">
-    Agregar button
+
+  <button class="bg-yellow-700 text-white py-2 rounded hover:bg-yellow-800" (click)="addButtonComponent()">
+    Button
   </button>
-  <div>
-    <h3 class="text-sm font-semibold mb-2 text-white">JSON del Canvas</h3>
-    <pre class="text-xs bg-gray-100 p-2 rounded h-40 overflow-auto whitespace-pre-wrap">
+
+  <button class="bg-green-600 text-white py-2 rounded hover:bg-green-700" (click)="addInputComponent()">
+    Input
+  </button>
+
+  <button class="bg-purple-600 text-white py-2 rounded hover:bg-purple-700" (click)="addTextareaComponent()">
+    Textarea
+  </button>
+
+  <button class="bg-pink-600 text-white py-2 rounded hover:bg-pink-700" (click)="addSelectComponent()">
+    Select
+  </button>
+
+  <button class="bg-indigo-600 text-white py-2 rounded hover:bg-indigo-700" (click)="addImageComponent()">
+    Imagen
+  </button>
+
+  <button class="bg-teal-600 text-white py-2 rounded hover:bg-teal-700" (click)="addCheckboxComponent()">
+    Checkbox
+  </button>
+
+  <button class="bg-rose-600 text-white py-2 rounded hover:bg-rose-700 col-span-2" (click)="addRadioComponent()">
+    Radio Button
+  </button>
+</div>
+
+<!-- Sección JSON -->
+<div>
+  <h3 class="text-xs font-semibold mb-1 text-white">JSON del Canvas</h3>
+  <pre class="text-[10px] bg-gray-100 p-1 rounded h-28 overflow-auto whitespace-pre-wrap leading-tight">
 {{ components | json }}
-    </pre>
-  </div>
+  </pre>
+</div>
+
+
 
   <button class="w-full bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700" (click)="openHtmlModal()">
     Ver HTML generado
   </button>
 
-  <button class="w-full bg-purple-600 text-white py-2 rounded hover:bg-purple-700 mt-2" (click)="loadSampleJson()">
-    Cargar JSON de ejemplo
-  </button>
 </aside>
 
 <!-- Modal HTML generado -->

@@ -66,21 +66,130 @@
 
   <!-- Template de renderizado recursivo -->
   <ng-template #renderComponent let-comp="comp">
-    <div class="border p-2 text-center cursor-move" [ngStyle]="comp.style" 
-      [style.position]="comp.parentId ? 'absolute' : 'relative'" [style.min-width.px]="50" [style.min-height.px]="40"
-      (mousedown)="onMouseDown($event, comp)" (click)="selectComponent(comp, $event)"
-      (contextmenu)="onComponentContextMenu($event, comp.id)">
-      <!-- Mostrar el contenido si existe -->
-      {{ comp.content || comp.label }}
-
-      <!-- Renderizar hijos si los hay -->
-      <ng-container *ngIf="comp.children">
-        <ng-container *ngFor="let child of comp.children">
-          <ng-container *ngTemplateOutlet="renderComponent; context: { comp: child }"></ng-container>
-        </ng-container>
+    <ng-container [ngSwitch]="comp.type">
+      <div
+        *ngSwitchCase="'div'"
+        [ngStyle]="comp.style"
+        (mousedown)="onMouseDown($event, comp)"
+        (click)="selectComponent(comp, $event)"
+        (contextmenu)="onComponentContextMenu($event, comp.id)"
+        class="absolute"
+      >
+        {{ comp.content }}
+      </div>
+  
+      <label
+        *ngSwitchCase="'label'"
+        [ngStyle]="comp.style"
+        (mousedown)="onMouseDown($event, comp)"
+        (click)="selectComponent(comp, $event)"
+        (contextmenu)="onComponentContextMenu($event, comp.id)"
+        class="absolute"
+      >
+        {{ comp.content }}
+      </label>
+  
+      <button
+        *ngSwitchCase="'button'"
+        class="absolute px-3 py-1 rounded bg-blue-600 text-white hover:bg-blue-700"
+        [style.top]="comp.style.top"
+        [style.left]="comp.style.left"
+        (mousedown)="onMouseDown($event, comp)"
+        (click)="selectComponent(comp, $event)"
+        (contextmenu)="onComponentContextMenu($event, comp.id)"
+      >
+        {{ comp.content }}
+      </button>
+  
+      <input
+        *ngSwitchCase="'input'"
+        type="text"
+        class="absolute border px-2 py-1 rounded"
+        [style.top]="comp.style.top"
+        [style.left]="comp.style.left"
+        [style.width]="comp.style.width"
+        [style.height]="comp.style.height"
+        [placeholder]="comp.content"
+        (mousedown)="onMouseDown($event, comp)"
+        (click)="selectComponent(comp, $event)"
+        (contextmenu)="onComponentContextMenu($event, comp.id)"
+      />
+  
+      <textarea
+        *ngSwitchCase="'textarea'"
+        class="absolute border px-2 py-1 rounded"
+        [style.top]="comp.style.top"
+        [style.left]="comp.style.left"
+        [style.width]="comp.style.width"
+        [style.height]="comp.style.height"
+        [placeholder]="comp.content"
+        (mousedown)="onMouseDown($event, comp)"
+        (click)="selectComponent(comp, $event)"
+        (contextmenu)="onComponentContextMenu($event, comp.id)"
+      ></textarea>
+  
+      <select
+        *ngSwitchCase="'select'"
+        class="absolute border px-2 py-1 rounded"
+        [style.top]="comp.style.top"
+        [style.left]="comp.style.left"
+        [style.width]="comp.style.width"
+        [style.height]="comp.style.height"
+        (mousedown)="onMouseDown($event, comp)"
+        (click)="selectComponent(comp, $event)"
+        (contextmenu)="onComponentContextMenu($event, comp.id)"
+      >
+        <option *ngFor="let opt of comp.content?.split('\n')">{{ opt }}</option>
+      </select>
+  
+      <img
+        *ngSwitchCase="'img'"
+        [src]="comp.content"
+        alt="imagen"
+        class="absolute rounded"
+        [style.top]="comp.style.top"
+        [style.left]="comp.style.left"
+        [style.width]="comp.style.width"
+        [style.height]="comp.style.height"
+        (mousedown)="onMouseDown($event, comp)"
+        (click)="selectComponent(comp, $event)"
+        (contextmenu)="onComponentContextMenu($event, comp.id)"
+      />
+  
+      <input
+        *ngSwitchCase="'checkbox'"
+        type="checkbox"
+        class="absolute"
+        [style.top]="comp.style.top"
+        [style.left]="comp.style.left"
+        (mousedown)="onMouseDown($event, comp)"
+        (click)="selectComponent(comp, $event)"
+        (contextmenu)="onComponentContextMenu($event, comp.id)"
+      />
+  
+      <input
+        *ngSwitchCase="'radio'"
+        type="radio"
+        class="absolute"
+        [style.top]="comp.style.top"
+        [style.left]="comp.style.left"
+        (mousedown)="onMouseDown($event, comp)"
+        (click)="selectComponent(comp, $event)"
+        (contextmenu)="onComponentContextMenu($event, comp.id)"
+      />
+    </ng-container>
+  
+    <!-- Renderizar hijos -->
+    <ng-container *ngIf="comp.children">
+      <ng-container *ngFor="let child of comp.children">
+        <ng-container *ngTemplateOutlet="renderComponent; context: { comp: child }"></ng-container>
       </ng-container>
-    </div>
+    </ng-container>
   </ng-template>
+  
+  
+  
+  
 
 
 </div>

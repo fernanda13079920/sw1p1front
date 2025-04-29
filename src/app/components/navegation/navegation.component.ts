@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef  } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ServerService } from '../../services/server.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-navegation',
@@ -16,13 +17,18 @@ export class NavegationComponent implements OnInit {
   roomName: string = ''; // Nombre de la sala que obtenemos del backend
   errorMessage: string = ''; // Para manejar errores
   usersInRoom: any[] = []; // Almacena los usuarios que se unen
+  @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
 
   constructor(
     private route: ActivatedRoute,
     private serverService: ServerService,
-    private router: Router
+    private router: Router,
+    private http: HttpClient
   ) { }
 
+  triggerFileInput() {
+    this.fileInput.nativeElement.click();
+  }
   ngOnInit(): void {
     this.roomCode = this.route.snapshot.paramMap.get('code') || '';
   }
@@ -44,7 +50,44 @@ export class NavegationComponent implements OnInit {
   }
 
   downloadAngularProject() {
+    if (!this.roomCode) return;
+  
     const url = `http://localhost:3000/api/export/angular/${this.roomCode}`;
-    window.open(url, '_blank'); // Abre la descarga del zip en otra pestaña
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', `proyecto-${this.roomCode}.zip`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+  
+  
+  scanAndDrawOcrDesign() {
+    const url = `http://localhost:3000/api/ocr/scan/${this.roomCode}`;
+    window.open(url, '_blank'); // o realiza una petición POST con HttpClient
+  }
+  onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+    if (!file || !this.roomCode) return;
+  
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('roomCode', this.roomCode);
+  
+    this.http.post(`http://localhost:3000/api/ocr/analyze`, formData).subscribe({
+      next: (res: any) => {
+        console.log('OCR terminado:', res);
+        alert('Diseño generado desde imagen');
+  
+        // 🚀 Aquí recargamos automáticamente los nuevos componentes:
+        this.serverService.joinRoom(this.roomCode); 
+        // Esto vuelve a pedir el canvas actualizado
+      },
+      error: (err) => {
+        console.error('Error al subir la imagen OCR:', err);
+        alert('Hubo un error al analizar la imagen');
+      },
+    });
   }
 }

@@ -140,6 +140,160 @@ export class SidebarIzqComponent implements OnInit {
     this.components.push(buttonComponent);
 }
 
+addInputComponent() {
+  const inputComponent: CanvasComponent = {
+    id: uuidv4(),
+    type: 'input',
+    style: {
+      top: '70px',
+      left: '70px',
+      width: '200px',
+      height: '40px',
+      backgroundColor: '#ffffff',
+      color: '#333333',
+      border: '1px solid #cccccc',
+      borderRadius: '4px',
+      position: 'absolute',
+      fontSize: '14px',
+      fontFamily: 'Arial, sans-serif',
+      padding: '8px',
+      display: 'block',
+    },
+    content: '', // los inputs no tienen texto interno
+    children: [],
+    parentId: null,
+  };
+
+  this.serverService.addCanvasComponent(this.roomCode, inputComponent);
+  this.components.push(inputComponent);
+  this.contextMenu.visible = false;
+}
+
+addTextareaComponent() {
+  const textareaComponent: CanvasComponent = {
+    id: uuidv4(),
+    type: 'textarea',
+    style: {
+      top: '80px',
+      left: '80px',
+      width: '250px',
+      height: '100px',
+      backgroundColor: '#ffffff',
+      color: '#333333',
+      border: '1px solid #cccccc',
+      borderRadius: '4px',
+      position: 'absolute',
+      fontSize: '14px',
+      fontFamily: 'Arial, sans-serif',
+      padding: '8px',
+      display: 'block',
+    },
+    content: '', 
+    children: [],
+    parentId: null,
+  };
+
+  this.serverService.addCanvasComponent(this.roomCode, textareaComponent);
+  this.components.push(textareaComponent);
+  this.contextMenu.visible = false;
+}
+
+addSelectComponent() {
+  const selectComponent: CanvasComponent = {
+    id: uuidv4(),
+    type: 'select',
+    style: {
+      top: '90px',
+      left: '90px',
+      width: '200px',
+      height: '40px',
+      backgroundColor: '#ffffff',
+      color: '#333333',
+      border: '1px solid #cccccc',
+      borderRadius: '4px',
+      position: 'absolute',
+      fontSize: '14px',
+      fontFamily: 'Arial, sans-serif',
+      padding: '8px',
+      display: 'block',
+    },
+    content: 'Option 1\nOption 2\nOption 3', // cada línea será una opción
+    children: [],
+    parentId: null,
+  };
+
+  this.serverService.addCanvasComponent(this.roomCode, selectComponent);
+  this.components.push(selectComponent);
+  this.contextMenu.visible = false;
+}
+
+addImageComponent() {
+  const imageComponent: CanvasComponent = {
+    id: uuidv4(),
+    type: 'img',
+    style: {
+      top: '100px',
+      left: '100px',
+      width: '150px',
+      height: '150px',
+      position: 'absolute',
+      borderRadius: '8px',
+      display: 'block',
+    },
+    content: 'https://via.placeholder.com/150', // URL de imagen por defecto
+    children: [],
+    parentId: null,
+  };
+
+  this.serverService.addCanvasComponent(this.roomCode, imageComponent);
+  this.components.push(imageComponent);
+  this.contextMenu.visible = false;
+}
+
+addCheckboxComponent() {
+  const checkboxComponent: CanvasComponent = {
+    id: uuidv4(),
+    type: 'checkbox',
+    style: {
+      top: '110px',
+      left: '110px',
+      width: '20px',
+      height: '20px',
+      position: 'absolute',
+      display: 'inline-block',
+    },
+    content: '', 
+    children: [],
+    parentId: null,
+  };
+
+  this.serverService.addCanvasComponent(this.roomCode, checkboxComponent);
+  this.components.push(checkboxComponent);
+  this.contextMenu.visible = false;
+}
+
+addRadioComponent() {
+  const radioComponent: CanvasComponent = {
+    id: uuidv4(),
+    type: 'radio',
+    style: {
+      top: '120px',
+      left: '120px',
+      width: '20px',
+      height: '20px',
+      position: 'absolute',
+      display: 'inline-block',
+    },
+    content: '',
+    children: [],
+    parentId: null,
+  };
+
+  this.serverService.addCanvasComponent(this.roomCode, radioComponent);
+  this.components.push(radioComponent);
+  this.contextMenu.visible = false;
+}
+
   openHtmlModal() {
     this.isModalOpen = true;
   }
@@ -152,7 +306,7 @@ export class SidebarIzqComponent implements OnInit {
         .join('; ');
   
       const childrenHtml = comp.children?.map(renderComponent).join('') || '';
-      const tag = comp.type || 'div'; // por defecto usa div
+      const tag = comp.type || 'div'; 
       const content = comp.content || '';
   
       if (tag === 'label') {
